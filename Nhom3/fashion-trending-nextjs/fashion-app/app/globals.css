@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --navy: #1a1f3a;
+  --accent: #e8272a;
+  --gold: #f5a623;
+  --mint: #4ecdc4;
+  --bg: #f8f5f0;
+  --card-bg: #ffffff;
+  --text: #1a1f3a;
+  --text-muted: #8a8fa8;
+  --shadow: 0 8px 32px rgba(26, 31, 58, 0.12);
+  --shadow-hover: 0 20px 60px rgba(26, 31, 58, 0.22);
+}
+
+html, body {
+  font-family: 'Georgia', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}

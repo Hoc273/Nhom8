@@ -7,8 +7,11 @@ const Header = ({ noteCount }) => {
   return (
     <header className={`header ${isDarkMode ? 'dark' : 'light'}`}>
       <div className="header-content">
-        <h1>📝 Ghi Chú Cá Nhân</h1>
-        <div className="header-info">
+        <div className="header-left">
+          <span className="header-icon">📝</span>
+          <h1>Ghi Chú Cá Nhân</h1>
+        </div>
+        <div className="header-right">
           <span className="note-count">{noteCount} ghi chú</span>
           <button 
             className="theme-toggle" 

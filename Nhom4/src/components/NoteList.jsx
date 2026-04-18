@@ -5,6 +5,8 @@ import { ThemeContext } from '../context/ThemeContext';
 const NoteList = ({ notes, onDeleteNote }) => {
   const { isDarkMode } = useContext(ThemeContext);
 
+  const icons = ['📚', '⚡', '🔗', '🌙', '📦'];
+
   if (notes.length === 0) {
     return (
       <div className={`note-list empty ${isDarkMode ? 'dark' : 'light'}`}>
@@ -15,8 +17,9 @@ const NoteList = ({ notes, onDeleteNote }) => {
 
   return (
     <div className={`note-list ${isDarkMode ? 'dark' : 'light'}`}>
-      {notes.map((note) => (
+      {notes.map((note, index) => (
         <div key={note.id} className={`note-item ${isDarkMode ? 'dark' : 'light'}`}>
+          <span className="note-icon">{icons[index % icons.length]}</span>
           <div className="note-content">
             <p className="note-text">{note.text}</p>
             <span className="note-time">{note.timestamp}</span>
@@ -26,7 +29,7 @@ const NoteList = ({ notes, onDeleteNote }) => {
             onClick={() => onDeleteNote(note.id)}
             title="Xóa ghi chú"
           >
-            ✕
+            Xóa
           </button>
         </div>
       ))}

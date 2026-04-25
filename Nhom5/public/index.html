@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buoi 6 - User API Practice</title>
+  <style>
+    :root {
+      --bg: #f7f5ef;
+      --ink: #1a1f2b;
+      --card: #fffcf4;
+      --line: #d6d1c4;
+      --accent: #1f6f5f;
+      --accent-dark: #145245;
+      --warm: #b45309;
+      --ok-bg: #e9f7f2;
+      --ok-text: #0d5a4a;
+      --err-bg: #fdecea;
+      --err-text: #8b1f1f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Georgia, 'Times New Roman', serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 20% 10%, #f9e8c4 0, transparent 35%),
+        radial-gradient(circle at 85% 85%, #d7ebe6 0, transparent 40%),
+        var(--bg);
+      padding: 26px;
+    }
+
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 20px 24px;
+      background: linear-gradient(105deg, #1f6f5f, #184d45);
+      color: #f9f7ef;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 20px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      background: #fffdfa;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 4px;
+      font-size: 13px;
+      color: #505765;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid #c7c2b5;
+      border-radius: 8px;
+      padding: 9px 10px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    input:focus {
+      outline: 2px solid #8ec8ba;
+      border-color: var(--accent);
+    }
+
+    button {
+      margin-top: 14px;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      color: #f7fbfa;
+      background: var(--accent);
+      transition: transform 0.08s ease, background-color 0.12s ease;
+    }
+
+    button:hover { background: var(--accent-dark); }
+    button:active { transform: scale(0.99); }
+
+    .result {
+      margin-top: 12px;
+      border-radius: 10px;
+      border: 1px dashed #c8c3b8;
+      background: #f6f3ea;
+      min-height: 76px;
+      padding: 10px;
+      white-space: pre-wrap;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .result.ok {
+      border-style: solid;
+      border-color: #9bd2c1;
+      background: var(--ok-bg);
+      color: var(--ok-text);
+    }
+
+    .result.err {
+      border-style: solid;
+      border-color: #efb5ae;
+      background: var(--err-bg);
+      color: var(--err-text);
+    }
+
+    .logs {
+      grid-column: 1 / -1;
+    }
+
+    .logs h2 { margin-bottom: 8px; }
+
+    #logArea {
+      background: #1d2b39;
+      color: #d6f5ec;
+      border-radius: 10px;
+      min-height: 90px;
+      max-height: 180px;
+      overflow: auto;
+      white-space: pre;
+      padding: 10px;
+      font-family: Consolas, 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .hint {
+      color: var(--warm);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 12px; }
+      .hero h1 { font-size: 23px; }
+      .grid { grid-template-columns: 1fr; padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="hero">
+      <h1>User API Playground</h1>
+      <p>Form 1 calls GET /api/info, Form 2 calls POST /api/register without page reload.</p>
+    </div>
+
+    <div class="grid">
+      <section class="panel">
+        <h2>Form 1 - GET /api/info</h2>
+        <form id="infoForm">
+          <label for="infoName">Name</label>
+          <input id="infoName" type="text" placeholder="Enter name" />
+
+          <label for="infoAge">Age</label>
+          <input id="infoAge" type="number" min="0" placeholder="Enter age" />
+
+          <button type="submit">Send GET</button>
+        </form>
+        <div class="result" id="infoResult">Result will appear here...</div>
+      </section>
+
+      <section class="panel">
+        <h2>Form 2 - POST /api/register</h2>
+        <form id="registerForm">
+          <label for="regName">Name</label>
+          <input id="regName" type="text" placeholder="Enter name" />
+
+          <label for="regAge">Age</label>
+          <input id="regAge" type="number" min="0" placeholder="Enter age" />
+
+          <label for="regEmail">Email</label>
+          <input id="regEmail" type="email" placeholder="name@example.com" />
+
+          <button type="submit">Send POST</button>
+        </form>
+        <div class="result" id="regResult">Result will appear here...</div>
+      </section>
+
+      <section class="panel logs">
+        <h2>Client Request Log</h2>
+        <div id="logArea">// waiting for requests...</div>
+        <p class="hint">Open browser devtools and Node terminal to see additional logs from middleware.</p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const infoForm = document.getElementById('infoForm');
+    const registerForm = document.getElementById('registerForm');
+    const infoResult = document.getElementById('infoResult');
+    const regResult = document.getElementById('regResult');
+    const logArea = document.getElementById('logArea');
+    const clientLogs = [];
+
+    function writeLog(method, path) {
+      const now = new Date().toLocaleString();
+      clientLogs.unshift(`[${now}] ${method} ${path}`);
+      if (clientLogs.length > 10) clientLogs.pop();
+      logArea.textContent = clientLogs.join('\n');
+    }
+
+    function showResult(el, data, ok) {
+      el.textContent = JSON.stringify(data, null, 2);
+      el.className = ok ? 'result ok' : 'result err';
+    }
+
+    infoForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const name = document.getElementById('infoName').value.trim();
+      const age = document.getElementById('infoAge').value.trim();
+      const query = new URLSearchParams({ name, age }).toString();
+      const url = `/api/info?${query}`;
+
+      writeLog('GET', url);
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        showResult(infoResult, data, response.ok);
+      } catch (error) {
+        showResult(infoResult, { message: error.message }, false);
+      }
+    });
+
+    registerForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const body = {
+        name: document.getElementById('regName').value.trim(),
+        age: document.getElementById('regAge').value.trim(),
+        email: document.getElementById('regEmail').value.trim()
+      };
+
+      writeLog('POST', '/api/register');
+
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await response.json();
+        showResult(regResult, data, response.ok);
+      } catch (error) {
+        showResult(regResult, { message: error.message }, false);
+      }
+    });
+  </script>
+</body>
+</html>
